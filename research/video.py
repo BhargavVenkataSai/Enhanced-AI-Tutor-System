@@ -1,74 +1,61 @@
 def fetch_video_transcripts(topic):
     """
-    Simulates fetching and processing video transcripts related to the topic.
-    In a production environment, this would integrate with platforms like YouTube,
-    Coursera, or educational video APIs.
-    
-    Args:
-        topic (str): The learning topic to search for
-        
-    Returns:
-        list: List of video transcripts with metadata and content summaries
+    Provides video resources with working YouTube search links.
     """
+    # Create search-friendly version of the topic
+    search_topic = topic.replace(' ', '+')
+    
     video_results = [
         {
             "title": f"{topic} for Beginners: A Comprehensive Introduction",
-            "creator": "LearnTech Academy",
+            "creator": "Various Educational Channels",
             "platform": "YouTube",
-            "duration": "18:24",
-            "url": f"https://youtube.com/watch?v={hash(topic) % 10000000:07d}",
-            "transcript_summary": f"This beginner-friendly video covers the fundamentals of {topic}. The instructor breaks down complex concepts into digestible segments with visual aids. Key sections include basic definitions, historical context, and starter examples.",
+            "duration": "Various",
+            "url": f"https://www.youtube.com/results?search_query={search_topic}+beginner+tutorial",
+            "transcript_summary": f"Find beginner-friendly tutorials about {topic}. These videos cover fundamentals, basic concepts, and introductory examples.",
             "key_timestamps": {
-                "0:00": "Introduction",
-                "2:15": f"What is {topic}?",
-                "5:30": "Historical Development",
-                "10:45": "Basic Principles",
-                "15:20": "Practical Applications"
+                "Beginner": "Basic concepts and fundamentals",
+                "Examples": "Practical demonstrations",
+                "Practice": "Hands-on exercises"
             }
         },
         {
-            "title": f"Advanced {topic} Techniques Explained",
-            "creator": "Prof. Sarah Johnson",
-            "platform": "Coursera",
-            "duration": "42:18",
-            "url": f"https://coursera.org/lecture/{topic.lower().replace(' ', '-')}/advanced-techniques",
-            "transcript_summary": f"This university-level lecture delves into advanced aspects of {topic}. Professor Johnson explains complex methodologies with real-world examples from her research. The discussion includes cutting-edge developments and expert perspectives.",
+            "title": f"Advanced {topic} Techniques",
+            "creator": "Various Expert Instructors",
+            "platform": "YouTube",
+            "duration": "Various",
+            "url": f"https://www.youtube.com/results?search_query={search_topic}+advanced+tutorial",
+            "transcript_summary": f"Discover advanced tutorials and in-depth explanations of {topic}.",
             "key_timestamps": {
-                "0:00": "Recap of Fundamentals",
-                "4:30": "Advanced Concept Introduction",
-                "12:15": "Detailed Methodology",
-                "25:40": "Case Studies",
-                "38:00": "Future Research Directions"
+                "Advanced": "Complex concepts and techniques",
+                "Examples": "Advanced applications",
+                "Practice": "Expert-level exercises"
             }
         },
         {
             "title": f"{topic} in Practice: Real-World Applications",
-            "creator": "Industry Insights Channel",
-            "platform": "Vimeo",
-            "duration": "31:05",
-            "url": f"https://vimeo.com/{hash(topic) % 100000000:08d}",
-            "transcript_summary": f"This practical demonstration shows {topic} being applied in various industries. Professionals share their experiences implementing {topic} solutions to real business problems.",
+            "creator": "Industry Professionals",
+            "platform": "YouTube",
+            "duration": "Various",
+            "url": f"https://www.youtube.com/results?search_query={search_topic}+real+world+applications",
+            "transcript_summary": f"Learn how {topic} is applied in real-world scenarios and industries.",
             "key_timestamps": {
-                "0:00": "Introduction to Case Studies",
-                "5:20": f"{topic} in Healthcare",
-                "12:45": f"{topic} in Finance",
-                "19:30": f"{topic} in Education",
-                "26:15": "Implementation Tips"
+                "Applications": "Practical implementations",
+                "Case Studies": "Real-world examples",
+                "Industry": "Professional applications"
             }
         },
         {
-            "title": f"The Future of {topic}: Emerging Trends",
-            "creator": "Tech Forward Conference",
-            "platform": "TED Talks",
-            "duration": "15:42",
-            "url": f"https://ted.com/talks/{topic.lower().replace(' ', '_')}_future",
-            "transcript_summary": f"This visionary talk explores how {topic} is likely to evolve in the next decade. The speaker discusses emerging technologies that will impact {topic} and makes predictions about future applications.",
+            "title": f"Latest Developments in {topic}",
+            "creator": "Educational Channels",
+            "platform": "YouTube",
+            "duration": "Various",
+            "url": f"https://www.youtube.com/results?search_query={search_topic}+latest+developments",
+            "transcript_summary": f"Stay updated with the latest trends and developments in {topic}.",
             "key_timestamps": {
-                "0:00": "Current State of the Field",
-                "3:15": "Technological Drivers",
-                "7:30": "Predicted Developments",
-                "11:00": "Potential Challenges",
-                "13:20": "Preparing for the Future"
+                "Updates": "Recent developments",
+                "Trends": "Current directions",
+                "Future": "Upcoming changes"
             }
         }
     ]
