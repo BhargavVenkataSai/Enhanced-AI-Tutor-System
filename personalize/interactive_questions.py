@@ -1,3 +1,74 @@
+"""
+Interactive questions generation module
+"""
+from typing import Dict, List
+
+def generate_questions(topic: str, difficulty: str) -> List[Dict]:
+    """
+    Generate interactive questions based on the topic and difficulty level.
+    
+    Args:
+        topic (str): The topic to generate questions for
+        difficulty (str): The difficulty level (beginner, intermediate, advanced)
+        
+    Returns:
+        List[Dict]: List of dictionaries containing questions and their metadata
+    """
+    # This is a placeholder implementation
+    # In a real implementation, you would:
+    # 1. Use an LLM or question generation API
+    # 2. Generate questions of appropriate difficulty
+    # 3. Include various question types
+    
+    sample_questions = [
+        {
+            "id": "q1",
+            "type": "multiple_choice",
+            "question": f"What is the main concept of {topic}?",
+            "options": [
+                "Option A",
+                "Option B",
+                "Option C",
+                "Option D"
+            ],
+            "correct_answer": "Option A",
+            "difficulty": difficulty
+        },
+        {
+            "id": "q2",
+            "type": "text_input",
+            "question": f"Explain how {topic} works in your own words.",
+            "difficulty": difficulty
+        }
+    ]
+    
+    return sample_questions
+
+def evaluate_answer(question_id: str, user_answer: str, correct_answer: str) -> Dict:
+    """
+    Evaluate a user's answer to a question.
+    
+    Args:
+        question_id (str): The ID of the question
+        user_answer (str): The user's answer
+        correct_answer (str): The correct answer
+        
+    Returns:
+        Dict: Dictionary containing evaluation results
+    """
+    # This is a placeholder implementation
+    # In a real implementation, you would:
+    # 1. Compare answers appropriately based on question type
+    # 2. Provide detailed feedback
+    # 3. Calculate score or proficiency
+    
+    return {
+        "question_id": question_id,
+        "is_correct": user_answer == correct_answer,
+        "feedback": "Good job!" if user_answer == correct_answer else "Try again!",
+        "explanation": f"The correct answer is: {correct_answer}"
+    }
+
 def ask_questions(topic=None):
     """
     Generates interactive questions to personalize the learning experience.

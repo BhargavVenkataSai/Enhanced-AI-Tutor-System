@@ -11,25 +11,19 @@ from research.report import generate_report
 import time
 import json
 
-
 def load_custom_css():
-    # Combine both CSS blocks into one and clean up duplicates
     st.markdown("""
         <style>
-            /* Base styles */
             html, body, [class*="css"] {
                 font-family: 'Segoe UI', sans-serif;
-                background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+                background: linear-gradient(135deg, #f8f9fa, #ff6633);
             }
-            
             .main {
-                background-color: rgba(255, 255, 255, 0.9);
+                background-color: #ffffffcc;
                 padding: 1.5rem;
                 border-radius: 15px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
             }
-
-            /* Typography */
             h1 {
                 color: #0056b3;
             }
@@ -40,31 +34,31 @@ def load_custom_css():
             h3 {
                 color: #0069d9;
             }
-
-            /* Buttons */
             .stButton > button {
-                background-image: linear-gradient(to right, #ff416c, #ff4b2b);
+                background-color: #1f77b4;
                 color: white;
-                border: none;
-                border-radius: 12px;
-                padding: 0.5rem 1.5rem;
-                font-weight: bold;
-                transition: all 0.3s ease;
+                border-radius: 10px;
+                padding: 0.5rem 1rem;
+                transition: 0.3s;
             }
             .stButton > button:hover {
+                background-color: #0056b3;
                 transform: scale(1.05);
-                box-shadow: 0 0 12px #ff416c88;
             }
-
-            /* Cards and Components */
+            .stRadio > div {
+                background-color: #1c1e29;
+                border-radius: 10px;
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+                box-shadow: 0px 1px 3px rgba(0,0,0,0.05);
+            }
             .question-card {
-                background-color: #f8f9fa;
+                background-color: #3364b4;
                 border-radius: 10px;
                 padding: 1rem;
                 margin-bottom: 1rem;
-                border-left: 4px solid #1f77b4;
+                border-left: 4px solid #bbbbbb;
             }
-            
             .resource-card {
                 background-color: white;
                 border-radius: 10px;
@@ -73,36 +67,11 @@ def load_custom_css():
                 box-shadow: 0px 2px 5px rgba(0,0,0,0.05);
                 border-left: 4px solid #1f77b4;
             }
-
-            /* Stage Indicators */
-            .stage-indicator {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 2rem;
-            }
-            
-            .stage {
-                text-align: center;
-                padding: 0.5rem;
-                border-radius: 5px;
-                background-color: #e9ecef;
-                flex: 1;
-                margin: 0 0.5rem;
-            }
-            
-            .stage.active {
-                background-color: #007bff;
-                color: white;
-                font-weight: bold;
-            }
-
-            /* Other Elements */
             .citation {
                 font-size: 0.8rem;
                 color: #6c757d;
                 font-style: italic;
             }
-            
             .feedback-box {
                 background-color: #e3f2fd;
                 border-radius: 10px;
@@ -110,25 +79,46 @@ def load_custom_css():
                 margin-top: 1rem;
                 border: 1px solid #b3e5fc;
             }
-
-            /* Tabs */
+            .stage-indicator {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 2rem;
+            }
+            .stage {
+                text-align: center;
+                padding: 0.5rem;
+                border-radius: 5px;
+                background-color: #007bff;
+                flex: 1;
+                margin: 0 0.5rem;
+            }
+            .stage.active {
+                background-color: #007bff;
+                color: white;
+                font-weight: bold;
+            }
+            .source-link {
+                text-decoration: none;
+                color: #007bff;
+                font-weight: 500;
+            }
+            .source-link:hover {
+                text-decoration: underline;
+            }
             .stTabs [data-baseweb="tab-list"] {
                 gap: 2px;
             }
-            
             .stTabs [data-baseweb="tab"] {
                 border-radius: 5px 5px 0px 0px;
                 padding: 10px 20px;
-                background-color: #f1f3f5;
+                background-color: #3364b4;
             }
-            
             .stTabs [aria-selected="true"] {
-                background-color: #1f77b4;
-                color: white;
+                background-color: #3364b4;
+                color: blue;
             }
         </style>
     """, unsafe_allow_html=True)
-
 
 def display_stage_indicator(current_stage):
     stages = ["Input Topic", "Research", "Personalize", "Generate Report", "Review & Refine"]
@@ -142,7 +132,6 @@ def display_stage_indicator(current_stage):
     
     st.markdown(f'<div class="stage-indicator">{html_stages}</div>', unsafe_allow_html=True)
 
-
 def render_web_results(web_results):
     if not web_results:
         st.info("No web content has been collected yet.")
@@ -150,10 +139,9 @@ def render_web_results(web_results):
     
     for i, result in enumerate(web_results):
         with st.expander(f"{result['title']}", expanded=i < 1):
-            st.markdown(f"*Source:* {result['source']}")
-            st.markdown(f"*Summary:* {result['summary']}")
+            st.markdown(f"**Source:** {result['source']}")
+            st.markdown(f"**Summary:** {result['summary']}")
             st.markdown(f"[View Source]({result['url']})", unsafe_allow_html=True)
-
 
 def render_academic_results(academic_results):
     if not academic_results:
@@ -162,13 +150,12 @@ def render_academic_results(academic_results):
     
     for i, paper in enumerate(academic_results):
         with st.expander(f"{paper['title']}", expanded=i < 1):
-            st.markdown(f"*Authors:* {paper['authors']}")
-            st.markdown(f"*Journal:* {paper['journal']} ({paper['year']})")
-            st.markdown(f"*DOI:* {paper['doi']}")
-            st.markdown(f"*Summary:* {paper['summary']}")
+            st.markdown(f"**Authors:** {paper['authors']}")
+            st.markdown(f"**Journal:** {paper['journal']} ({paper['year']})")
+            st.markdown(f"**DOI:** {paper['doi']}")
+            st.markdown(f"**Summary:** {paper['summary']}")
             if 'keywords' in paper:
-                st.markdown(f"*Keywords:* {', '.join(paper['keywords'])}")
-
+                st.markdown(f"**Keywords:** {', '.join(paper['keywords'])}")
 
 def render_video_results(video_results):
     if not video_results:
@@ -177,15 +164,14 @@ def render_video_results(video_results):
     
     for i, video in enumerate(video_results):
         with st.expander(f"{video['title']} ({video['duration']})", expanded=i < 1):
-            st.markdown(f"*Creator:* {video['creator']} on {video['platform']}")
-            st.markdown(f"*Summary:* {video['transcript_summary']}")
+            st.markdown(f"**Creator:** {video['creator']} on {video['platform']}")
+            st.markdown(f"**Summary:** {video['transcript_summary']}")
             
-            st.markdown("*Key Timestamps:*")
+            st.markdown("**Key Timestamps:**")
             for timestamp, description in video['key_timestamps'].items():
-                st.markdown(f"- *{timestamp}:* {description}")
+                st.markdown(f"- **{timestamp}:** {description}")
                 
             st.markdown(f"[Watch Video]({video['url']})", unsafe_allow_html=True)
-
 
 def render_interactive_questions(questions_by_category, topic):
     if not questions_by_category:
@@ -230,7 +216,6 @@ def render_interactive_questions(questions_by_category, topic):
     
     return answers
 
-
 def collect_research(topic):
     # Perform simulated research on topic
     with st.spinner(f"📚 Researching {topic}..."):
@@ -259,28 +244,10 @@ def collect_research(topic):
         "video_results": st.session_state.video_results
     }
 
-
-def render_report(report):
-    st.markdown(report, unsafe_allow_html=True)
-    
-    # Add interactive elements for practice problems
-    if st.button("Show Solutions"):
-        st.markdown("Solutions will be displayed here...")
-    
-    # Add feedback mechanism
-    st.markdown("### Was this explanation helpful?")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        if st.button("👍 Yes"):
-            st.success("Thanks for your feedback!")
-    with col2:
-        if st.button("👎 No"):
-            st.text_area("How can we improve?")
-
-
+# Set page config first (must be the first Streamlit command)
 st.set_page_config(page_title="Enhanced Learning Assistant", layout="wide", initial_sidebar_state="expanded")
-st.title("🎓 Enhanced Interactive Learning Assistant")
 
+# Load custom CSS
 load_custom_css()
 
 # Initialize session state variables if they don't exist
@@ -291,7 +258,8 @@ for key in ['web_results', 'academic_results', 'video_results', 'preferences', '
     if key not in st.session_state:
         st.session_state[key] = None
 
-# Display current stage indicator
+# Display title and stage indicator
+st.title("🎓 Enhanced Interactive Learning Assistant")
 display_stage_indicator(st.session_state.stage)
 
 # STAGE 1: Topic and Objective Input
@@ -379,10 +347,44 @@ elif st.session_state.stage == 4:
 
 # STAGE 5: Report Review and Modification
 elif st.session_state.stage == 5:
-    st.header(f"Personalized Learning Guide: {st.session_state.topic}")
+    st.header(f"Personalized Learning Report: {st.session_state.topic}")
     
-    # Display the full report with interactive elements
-    render_report(st.session_state.report)
+    # Display the full report
+    st.markdown(st.session_state.report, unsafe_allow_html=True)
+    
+    # Feedback and modification section
+    st.markdown("### Provide Feedback for Report Modifications")
+    
+    feedback = st.text_area(
+        "Please provide any feedback or requests for modifications to your report:",
+        placeholder="Example: I'd like more focus on practical applications or please expand the section on historical context",
+        key="feedback_input"
+    )
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button("Regenerate Report with Feedback"):
+            if feedback:
+                st.session_state.user_feedback = feedback
+                
+                # In a real implementation, this would analyze the feedback and modify the report
+                # For this simulation, we'll just acknowledge the feedback
+                st.session_state.report += f"\n\n## Report Modification Based on Feedback\n\n{feedback}\n\n*The report has been updated to address this feedback.*"
+                
+                st.success("Report has been updated based on your feedback!")
+                st.rerun()
+            else:
+                st.warning("Please provide feedback for report modification.")
+    
+    with col2:
+        if st.button("Start a New Learning Journey"):
+            # Reset all state except for preferences which might be reused
+            for key in ['web_results', 'academic_results', 'video_results', 'topic', 'objective', 'report', 'user_feedback']:
+                st.session_state[key] = None
+            
+            st.session_state.stage = 1
+            st.rerun()
 
 # Sidebar with navigation and help
 with st.sidebar:
@@ -426,11 +428,11 @@ with st.sidebar:
     # Help section
     st.header("How It Works")
     st.markdown("""
-    1. *Define* your learning topic and objectives
-    2. *Research* gathers information from multiple sources
-    3. *Personalize* by answering questions about your preferences
-    4. *Generate* a comprehensive learning report
-    5. *Review & Modify* the report based on your feedback
+    1. **Define** your learning topic and objectives
+    2. **Research** gathers information from multiple sources
+    3. **Personalize** by answering questions about your preferences
+    4. **Generate** a comprehensive learning report
+    5. **Review & Modify** the report based on your feedback
     """)
     
     st.markdown("---")
@@ -442,3 +444,5 @@ with st.sidebar:
     
     This is a demonstration of an AI tutor system that could integrate with real-world research APIs and learning resources.
     """)
+
+

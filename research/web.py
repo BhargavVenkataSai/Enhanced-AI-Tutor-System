@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import wikipedia
 from googleapiclient.discovery import build
 import os
+from typing import Dict, List, Optional
 
 def is_tech_topic(topic):
     """
@@ -18,97 +19,38 @@ def is_tech_topic(topic):
     ]
     return any(keyword in topic.lower() for keyword in tech_keywords)
 
-def fetch_web_content(topic):
+def fetch_web_content(topic: str) -> List[Dict]:
     """
-    Fetches web content related to the specified topic.
-    """
-    results = []
+    Fetch and process web content related to the given topic.
     
-    # Add W3Schools first for tech topics
-    if is_tech_topic(topic):
-        # Format topic for W3Schools URL
-        w3_topic = topic.lower().replace(' ', '')
-        w3_url = f"https://www.w3schools.com/{w3_topic}"
+    Args:
+        topic (str): The topic to search for
         
-        results.append({
-            "title": f"W3Schools Tutorial: {topic}",
-            "source": "W3Schools",
-            "summary": f"Interactive tutorials, references, and examples for {topic}. Includes practical exercises and certifications.",
-            "url": w3_url
-        })
-        
-        # MDN Web Docs for web development topics
-        if any(keyword in topic.lower() for keyword in ['web', 'html', 'css', 'javascript', 'js', 'api']):
-            mdn_topic = topic.lower().replace(' ', '-')
-            results.append({
-                "title": f"MDN Web Docs: {topic}",
-                "source": "Mozilla Developer Network",
-                "summary": f"Comprehensive documentation and guides for {topic} from Mozilla.",
-                "url": f"https://developer.mozilla.org/en-US/docs/Web/{mdn_topic}"
-            })
-
-    # Wikipedia summary
-    try:
-        wiki_content = wikipedia.summary(topic, sentences=3)
-        wiki_page = wikipedia.page(topic)
-        results.append({
-            "title": f"Wikipedia: {topic}",
-            "source": "Wikipedia",
-            "summary": wiki_content,
-            "url": wiki_page.url
-        })
-    except:
-        pass
-
-    # GeeksforGeeks for programming topics
-    if is_tech_topic(topic):
-        geeks_topic = topic.lower().replace(' ', '-')
-        results.append({
-            "title": f"GeeksforGeeks: {topic}",
-            "source": "GeeksforGeeks",
-            "summary": f"Programming tutorials, algorithms, and practice problems for {topic}",
-            "url": f"https://www.geeksforgeeks.org/{geeks_topic}"
-        })
-
-    # Khan Academy search
-    khan_url = f"https://www.khanacademy.org/search?search_again=1&page_search_query={topic.replace(' ', '+')}"
-    results.append({
-        "title": f"Khan Academy Resources for {topic}",
-        "source": "Khan Academy",
-        "summary": f"Interactive lessons and practice exercises on {topic}",
-        "url": khan_url
-    })
-
-    # Coursera search
-    coursera_url = f"https://www.coursera.org/search?query={topic.replace(' ', '+')}"
-    results.append({
-        "title": f"Online Courses on {topic}",
-        "source": "Coursera",
-        "summary": f"Professional courses and certifications related to {topic}",
-        "url": coursera_url
-    })
-
-    # GitHub resources for tech topics
-    if is_tech_topic(topic):
-        github_url = f"https://github.com/search?q={topic.replace(' ', '+')}&type=repositories"
-        results.append({
-            "title": f"GitHub Projects: {topic}",
-            "source": "GitHub",
-            "summary": f"Open source projects, examples, and learning resources for {topic}",
-            "url": github_url
-        })
-
-    # Stack Overflow for tech topics
-    if is_tech_topic(topic):
-        stackoverflow_url = f"https://stackoverflow.com/questions/tagged/{topic.replace(' ', '-')}"
-        results.append({
-            "title": f"Stack Overflow: {topic}",
-            "source": "Stack Overflow",
-            "summary": f"Questions, answers, and discussions about {topic} from the developer community",
-            "url": stackoverflow_url
-        })
-
-    return results
+    Returns:
+        List[Dict]: List of dictionaries containing processed web content
+    """
+    # This is a placeholder implementation
+    # In a real implementation, you would:
+    # 1. Use a search API to find relevant pages
+    # 2. Fetch and parse the content
+    # 3. Process and summarize the content
+    
+    sample_results = [
+        {
+            "title": f"Understanding {topic}",
+            "source": "example.com",
+            "summary": f"A comprehensive guide to {topic} covering basic concepts and advanced applications.",
+            "url": "https://example.com/article1"
+        },
+        {
+            "title": f"{topic} for Beginners",
+            "source": "tutorial.com",
+            "summary": f"Step-by-step introduction to {topic} with practical examples.",
+            "url": "https://tutorial.com/basics"
+        }
+    ]
+    
+    return sample_results
 
 def fetch_video_transcripts(topic):
     """
