@@ -2,3 +2,9 @@ streamlit
 beautifulsoup4
 requests
 python-dotenv
+openai
+langchain
+pandas
+numpy
+matplotlib
+scikit-learn

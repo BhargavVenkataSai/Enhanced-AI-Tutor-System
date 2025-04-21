@@ -1,15 +1,18 @@
-
 # Use official Python image
-FROM python:3.9
+FROM python:3.9-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy all files
+# Copy requirements first for better caching
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application
 COPY . .
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
 
 # Expose Streamlit port
 EXPOSE 8501
