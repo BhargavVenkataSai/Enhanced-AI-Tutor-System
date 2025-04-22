@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import wikipedia
-from googleapiclient.discovery import build
 import os
 from typing import Dict, List, Optional
 
@@ -19,6 +18,50 @@ def is_tech_topic(topic):
     ]
     return any(keyword in topic.lower() for keyword in tech_keywords)
 
+def fetch_wikipedia_content(topic: str) -> Optional[Dict]:
+    """
+    Fetch content from Wikipedia for the given topic.
+    
+    Args:
+        topic (str): The topic to search for
+        
+    Returns:
+        Optional[Dict]: Dictionary containing Wikipedia content or None if not found
+    """
+    try:
+        # Search for the topic
+        search_results = wikipedia.search(topic)
+        if not search_results:
+            return None
+            
+        # Get the first result
+        page = wikipedia.page(search_results[0])
+        
+        # Get a summary of the content
+        summary = wikipedia.summary(search_results[0], sentences=3)
+        
+        return {
+            "title": page.title,
+            "source": "Wikipedia",
+            "summary": summary,
+            "url": page.url,
+            "content": page.content[:1000]  # First 1000 characters of content
+        }
+    except wikipedia.exceptions.DisambiguationError as e:
+        # If there are multiple matches, use the first one
+        page = wikipedia.page(e.options[0])
+        summary = wikipedia.summary(e.options[0], sentences=3)
+        return {
+            "title": page.title,
+            "source": "Wikipedia",
+            "summary": summary,
+            "url": page.url,
+            "content": page.content[:1000]
+        }
+    except Exception as e:
+        print(f"Error fetching Wikipedia content: {e}")
+        return None
+
 def fetch_web_content(topic: str) -> List[Dict]:
     """
     Fetch and process web content related to the given topic.
@@ -29,28 +72,49 @@ def fetch_web_content(topic: str) -> List[Dict]:
     Returns:
         List[Dict]: List of dictionaries containing processed web content
     """
-    # This is a placeholder implementation
-    # In a real implementation, you would:
-    # 1. Use a search API to find relevant pages
-    # 2. Fetch and parse the content
-    # 3. Process and summarize the content
+    results = []
     
-    sample_results = [
+    # Fetch Wikipedia content
+    wiki_content = fetch_wikipedia_content(topic)
+    if wiki_content:
+        results.append(wiki_content)
+    
+    # Add tech-specific resources if it's a tech topic
+    if is_tech_topic(topic):
+        tech_resources = [
+            {
+                "title": f"{topic} - Official Documentation",
+                "source": "Documentation",
+                "summary": f"Official documentation and reference materials for {topic}",
+                "url": f"https://docs.python.org/3/search.html?q={topic.replace(' ', '+')}"
+            },
+            {
+                "title": f"{topic} Tutorial",
+                "source": "Real Python",
+                "summary": f"Comprehensive tutorial and practical examples for {topic}",
+                "url": f"https://realpython.com/search/?q={topic.replace(' ', '+')}"
+            }
+        ]
+        results.extend(tech_resources)
+    
+    # Add general educational resources
+    general_resources = [
         {
-            "title": f"Understanding {topic}",
-            "source": "example.com",
-            "summary": f"A comprehensive guide to {topic} covering basic concepts and advanced applications.",
-            "url": "https://example.com/article1"
+            "title": f"Learn {topic}",
+            "source": "Khan Academy",
+            "summary": f"Structured learning path for {topic} with video lessons and exercises",
+            "url": f"https://www.khanacademy.org/search?page_search_query={topic.replace(' ', '+')}"
         },
         {
-            "title": f"{topic} for Beginners",
-            "source": "tutorial.com",
-            "summary": f"Step-by-step introduction to {topic} with practical examples.",
-            "url": "https://tutorial.com/basics"
+            "title": f"{topic} Course",
+            "source": "Coursera",
+            "summary": f"Professional courses and certifications for {topic}",
+            "url": f"https://www.coursera.org/search?query={topic.replace(' ', '+')}"
         }
     ]
+    results.extend(general_resources)
     
-    return sample_results
+    return results
 
 def fetch_video_transcripts(topic):
     """
