@@ -83,36 +83,50 @@ def fetch_web_content(topic: str) -> List[Dict]:
     if is_tech_topic(topic):
         tech_resources = [
             {
-                "title": f"{topic} - Official Documentation",
-                "source": "Documentation",
-                "summary": f"Official documentation and reference materials for {topic}",
-                "url": f"https://docs.python.org/3/search.html?q={topic.replace(' ', '+')}"
+                "title": f"{topic} - GeeksforGeeks",
+                "source": "GeeksforGeeks",
+                "summary": f"Comprehensive tutorials and articles about {topic}",
+                "url": f"https://www.geeksforgeeks.org/search/?q={topic.replace(' ', '+')}"
             },
             {
                 "title": f"{topic} Tutorial",
-                "source": "Real Python",
-                "summary": f"Comprehensive tutorial and practical examples for {topic}",
-                "url": f"https://realpython.com/search/?q={topic.replace(' ', '+')}"
+                "source": "Javatpoint",
+                "summary": f"Detailed tutorials and examples for {topic}",
+                "url": f"https://www.javatpoint.com/search?q={topic.replace(' ', '+')}"
+            },
+            {
+                "title": f"{topic} - W3Schools",
+                "source": "W3Schools",
+                "summary": f"Interactive tutorials and examples for {topic}",
+                "url": f"https://www.w3schools.com/search/?q={topic.replace(' ', '+')}"
+            },
+            {
+                "title": f"{topic} - TutorialsPoint",
+                "source": "TutorialsPoint",
+                "summary": f"Free tutorials and reference materials for {topic}",
+                "url": f"https://www.tutorialspoint.com/search?q={topic.replace(' ', '+')}"
+            },
+            {
+                "title": f"{topic} - freeCodeCamp",
+                "source": "freeCodeCamp",
+                "summary": f"Free coding tutorials and projects for {topic}",
+                "url": f"https://www.freecodecamp.org/search/?query={topic.replace(' ', '+')}"
             }
         ]
         results.extend(tech_resources)
     
-    # Add general educational resources
-    general_resources = [
-        {
-            "title": f"Learn {topic}",
-            "source": "Khan Academy",
-            "summary": f"Structured learning path for {topic} with video lessons and exercises",
-            "url": f"https://www.khanacademy.org/search?page_search_query={topic.replace(' ', '+')}"
-        },
-        {
-            "title": f"{topic} Course",
-            "source": "Coursera",
-            "summary": f"Professional courses and certifications for {topic}",
-            "url": f"https://www.coursera.org/search?query={topic.replace(' ', '+')}"
-        }
-    ]
-    results.extend(general_resources)
+    # Add math and science resources
+    math_science_keywords = ['math', 'mathematics', 'physics', 'chemistry', 'biology', 'science']
+    if any(keyword in topic.lower() for keyword in math_science_keywords):
+        math_science_resources = [
+            {
+                "title": f"{topic} - BYJU'S",
+                "source": "BYJU'S",
+                "summary": f"Interactive learning materials and video lessons for {topic}",
+                "url": f"https://byjus.com/search/?q={topic.replace(' ', '+')}"
+            }
+        ]
+        results.extend(math_science_resources)
     
     return results
 
@@ -170,3 +184,29 @@ def fetch_video_transcripts(topic):
         ])
     
     return videos
+
+def get_premium_course_suggestions(topic: str) -> List[Dict]:
+    """
+    Get suggestions for premium courses on the topic.
+    
+    Args:
+        topic (str): The topic to search for
+        
+    Returns:
+        List[Dict]: List of dictionaries containing premium course suggestions
+    """
+    premium_courses = [
+        {
+            "title": f"{topic} - Udemy",
+            "source": "Udemy",
+            "summary": f"Comprehensive paid courses for {topic} with lifetime access",
+            "url": f"https://www.udemy.com/courses/search/?q={topic.replace(' ', '+')}"
+        },
+        {
+            "title": f"{topic} - Coursera",
+            "source": "Coursera",
+            "summary": f"Professional courses and certifications for {topic}",
+            "url": f"https://www.coursera.org/search?query={topic.replace(' ', '+')}"
+        }
+    ]
+    return premium_courses
